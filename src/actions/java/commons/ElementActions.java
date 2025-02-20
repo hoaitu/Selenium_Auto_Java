@@ -3,6 +3,7 @@ package commons;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 import java.util.Set;
 
@@ -98,4 +99,21 @@ public class ElementActions {
         }
         return by;
     }
+
+    public WebElement findElement(String locator){
+        return driver.findElement((getLocatorBy(locator)));
+    }
+
+    public void clickToElement(String locator){
+       driver.findElement(getLocatorBy(locator)).click();
+    }
+
+    public void sendKeysToElement(String locator, String text){
+        driver.findElement(getLocatorBy(locator)).sendKeys(text);
+    }
+
+    public void getTextFromElement(String locator){
+        driver.findElement(getLocatorBy(locator)).getText();
+    }
+
 }
