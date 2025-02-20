@@ -4,7 +4,10 @@ import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.Set;
 
 //thao tác với element
@@ -104,12 +107,40 @@ public class ElementActions {
         return driver.findElement((getLocatorBy(locator)));
     }
 
+    public void setImplicitWait(int timeout){
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(timeout));
+    }
+
+    public Alert waitForAlertPresent(){
+        return new WebDriverWait(driver, Duration.ofSeconds(30)).until(ExpectedConditions.alertIsPresent());
+    }
+
+    public void waitForElementVisible(String locator){
+        new WebDriverWait(driver, Duration.ofSeconds(30)).until(ExpectedConditions.visibilityOfElementLocated(getLocatorBy(locator)));
+    }
+
+    public void waitForElementVisible(String locator, int timeout, String...restParam){
+        new WebDriverWait(driver, Duration.ofSeconds(timeout)).until(ExpectedConditions.visibilityOfElementLocated(getLocatorBy(getDynamicLocator(locator, restParam))));
+    }
+
+    public String getDynamicLocator(String locator, String...restParam){
+        return String.format(locator,(Object[])restParam);
+    }
+
     public void clickToElement(String locator){
        driver.findElement(getLocatorBy(locator)).click();
     }
 
+    public void clickToElementById(String locator, String...restParam){
+        driver.findElement(getLocatorBy(getDynamicLocator(locator,restParam))).click();
+    }
+
     public void sendKeysToElement(String locator, String text){
         driver.findElement(getLocatorBy(locator)).sendKeys(text);
+    }
+
+    public void sendKeysToElement(String locator, String text, String...restParam){
+        driver.findElement(getLocatorBy(getDynamicLocator(locator,restParam))).sendKeys(text);
     }
 
     public void getTextFromElement(String locator){
